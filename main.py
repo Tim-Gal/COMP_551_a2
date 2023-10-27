@@ -1,5 +1,9 @@
 import matplotlib
 import numpy as np
+
+import torch
+from torchvision import datasets, transforms
+
 import matplotlib.pyplot as plt
 from IPython.core.debugger import set_trace
 #from tqdm import notebook
@@ -9,6 +13,33 @@ from IPython.core.debugger import set_trace
 import warnings
 warnings.filterwarnings('ignore')
 
+
+mnist_transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
+cifar_transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5,), (0.5, 0.5, 0.5,))
+])
+
+
+mnist_trainset = datasets.FashionMNIST(root='./data', train=True, download=True, transform=mnist_transform)
+mnist_testset = datasets.FashionMNIST(root='./data', train=False, download=True, transform=mnist_transform)
+
+cifar_trainset = datasets.CIFAR10(root='./data', train=True, download=True, transform=mnist_transform)
+cifar_testset = datasets.CIFAR10(root='./data', train=False, download=True, transform=mnist_transform)
+
+
+batch_size = 64
+mnist_train_loader = torch.utils.data.DataLoader(mnist_trainset, batch_size=batch_size, shuffle=True)
+mnist_test_loader = torch.utils.data.DataLoader(mnist_testset, batch_size=batch_size, shuffle=False)
+
+cifar_train_loader = torch.utils.data.DataLoader(cifar_trainset, batch_size=batch_size, shuffle=True)
+cifar_test_loader = torch.utils.data.DataLoader(cifar_testset, batch_size=batch_size, shuffle=False)
+
+print(type(mnist_trainset))
+print(type(mnist_test_loader))
 
 class Perceptron:
 
